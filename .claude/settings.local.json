@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/dev/workspace-67d97aac/)",
+      "Read(//Users/dev/**)",
+      "Bash(python -c \"import mcp; print\\('mcp installed', mcp.__version__ if hasattr\\(mcp,'__version__'\\) else 'ok'\\)\")"
+    ]
+  }
+}

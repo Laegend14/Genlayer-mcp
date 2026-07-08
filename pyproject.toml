@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "genlayer-docs-mcp"
+version = "0.1.0"
+description = "Model Context Protocol (MCP) server for GenLayer documentation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "GenLayer Labs" }
+]
+keywords = ["mcp", "model-context-protocol", "genlayer", "documentation", "llm", "ai", "claude"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Documentation",
+]
+dependencies = [
+    "mcp>=1.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/genlayerlabs/genlayer-docs-mcp"
+Repository = "https://github.com/genlayerlabs/genlayer-docs-mcp"
+"GenLayer Docs" = "https://docs.genlayer.com"
+
+[project.scripts]
+genlayer-docs-mcp = "genlayer_docs_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/genlayer_docs_mcp"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/genlayer_docs_mcp/genlayer-docs.txt" = "genlayer_docs_mcp/genlayer-docs.txt"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/genlayer_docs_mcp/**/*.py",
+    "src/genlayer_docs_mcp/genlayer-docs.txt",
+    "README.md",
+    "LICENSE",
+]
