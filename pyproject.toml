@@ -29,8 +29,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/genlayerlabs/genlayer-docs-mcp"
-Repository = "https://github.com/genlayerlabs/genlayer-docs-mcp"
+Homepage = "https://github.com/Laegend14/Genlayer-mcp"
+Repository = "https://github.com/Laegend14/Genlayer-mcp"
 "GenLayer Docs" = "https://docs.genlayer.com"
 
 [project.scripts]

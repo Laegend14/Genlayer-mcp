@@ -2,7 +2,7 @@
 
 A standardized, shareable Model Context Protocol (MCP) server that packages and exposes the GenLayer documentation (`genlayer-docs.txt`) to any AI assistant (including Claude Desktop, Cursor, Windsurf, Gemini, and others).
 
-By packaging this as a Python project with a `pyproject.toml` and utilizing the official `mcp` SDK, anyone can run it instantly with zero manual file path or dependency setup.
+By packaging this as a Python project with a `pyproject.toml` and utilizing the official `mcp` SDK, anyone can run it with a standard Python install — no manual file paths or dependency wrangling.
 
 ## Available Tools
 
@@ -10,7 +10,7 @@ Once registered, the server exposes the following tools:
 
 1. **`search_docs(query: string, top_k: int = 5)`**:
    Search the GenLayer documentation for relevant sections matching a query. Returns top matching sections along with their hierarchical title breadcrumbs (e.g., `What is GenLayer > Core Technology > On-Chain AI Processing`) and starting line numbers.
-   
+
 2. **`get_section(title: string)`**:
    Retrieve the full content of a specific documentation section matching the specified heading title.
 
@@ -19,62 +19,61 @@ Once registered, the server exposes the following tools:
 
 ---
 
-## Universal Running & Setup Options
+## Quick Start (Recommended)
 
-You can run this server using standard Python tools. We recommend using **`uv`** (a fast Python package manager) for a zero-install experience, or standard **`pip`/`pipx`**.
+This is the setup verified to work with a standard Python installation on Windows, macOS, and Linux.
 
-### Option A: Running Locally (For Development)
+### 1. Install the package
 
-If you have cloned or downloaded this directory locally to `c:\Users\MueAb\Desktop\Genlayer mcp`:
+From PyPI:
 
-#### 1. Claude Desktop Setup
-Open your Claude configuration file (on Windows: `%APPDATA%\Claude\claude_desktop_config.json`) and add the server inside the `mcpServers` block:
+```bash
+pip install genlayer-docs-mcp
+```
 
-* **Using `uvx` (Easiest, zero-install)**:
-  ```json
-  {
-    "mcpServers": {
-      "genlayer-docs": {
-        "command": "uvx",
-        "args": [
-          "--from",
-          "c:\\Users\\MueAb\\Desktop\\Genlayer mcp",
-          "genlayer-docs-mcp"
-        ]
-      }
+Or from source (after cloning this repo):
+
+```bash
+pip install .
+```
+
+### 2. Register it with your AI client
+
+Add the server inside the `mcpServers` block of your client's MCP config
+(Claude Desktop on Windows: `%APPDATA%\Claude\claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "genlayer-docs": {
+      "command": "python",
+      "args": [
+        "-m",
+        "genlayer_docs_mcp"
+      ]
     }
   }
-  ```
+}
+```
 
-* **Using installed python package**:
-  If you have installed the package via `pip install -e .` (or `pip install .`):
-  ```json
-  {
-    "mcpServers": {
-      "genlayer-docs": {
-        "command": "python",
-        "args": [
-          "-m",
-          "genlayer_docs_mcp.server"
-        ]
-      }
-    }
-  }
-  ```
+> **Why `python -m`?** It uses the Python interpreter already on your `PATH`, so
+> there is nothing extra to install (unlike `uvx`, which requires `uv` to be
+> installed first). Restart your client after saving, and the three tools above
+> will appear.
 
-#### 2. Cursor IDE / Windsurf Setup
-Register the server in your editor's MCP settings:
+For **Cursor / Windsurf**, use the same values in the editor's MCP settings:
 * **Type**: `command`
-* **Command**: `uvx --from "c:\Users\MueAb\Desktop\Genlayer mcp" genlayer-docs-mcp`
+* **Command**: `python`
+* **Args**: `-m genlayer_docs_mcp`
 
 ---
 
-### Option B: Publishing & Distributing to PyPI (For Everyone)
+## Alternative: Zero-install with `uvx`
 
-If you publish this package to PyPI (e.g., under the name `genlayer-docs-mcp`), **anyone in the world** can use it on **any AI client** instantly with zero local files!
+If you have [`uv`](https://docs.astral.sh/uv/) installed, you can run the server
+without installing it first. Anyone in the world can use this on any AI client
+with zero local files:
 
-#### 1. Claude Desktop Setup
-Any user can simply add this to their `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
@@ -86,15 +85,21 @@ Any user can simply add this to their `claude_desktop_config.json`:
 }
 ```
 
-#### 2. Cursor IDE / Windsurf Setup
-* **Type**: `command`
-* **Command**: `uvx genlayer-docs-mcp`
+Cursor / Windsurf command: `uvx genlayer-docs-mcp`
+
+> Requires `uv`/`uvx` on your `PATH`. Install it with `winget install astral-sh.uv`
+> (Windows) or see the [uv install guide](https://docs.astral.sh/uv/getting-started/installation/).
 
 ---
 
-### Option B2: Install directly from GitHub (no PyPI needed)
+## Alternative: Install directly from GitHub (no PyPI needed)
 
-If you prefer not to wait for PyPI, or want to track the latest source, any user can run the server straight from the public GitHub repository:
+To track the latest source, install straight from the public repository:
+
+* **Using `pip`**:
+  ```bash
+  pip install "git+https://github.com/Laegend14/Genlayer-mcp"
+  ```
 
 * **Using `uvx` (zero-install)**:
   ```json
@@ -104,7 +109,7 @@ If you prefer not to wait for PyPI, or want to track the latest source, any user
         "command": "uvx",
         "args": [
           "--from",
-          "git+https://github.com/genlayerlabs/genlayer-docs-mcp",
+          "git+https://github.com/Laegend14/Genlayer-mcp",
           "genlayer-docs-mcp"
         ]
       }
@@ -112,23 +117,43 @@ If you prefer not to wait for PyPI, or want to track the latest source, any user
   }
   ```
 
-* **Using `pip`**:
-  ```bash
-  pip install "git+https://github.com/genlayerlabs/genlayer-docs-mcp"
-  ```
-
 ---
 
-### Option C: Installation via `pipx` or `pip`
-Users who prefer not to use `uvx` can install the server globally using `pipx`:
+## Alternative: Global install via `pipx`
+
+Users who prefer an isolated global install can use `pipx`:
 
 ```bash
-# Install globally from PyPI
+# From PyPI
 pipx install genlayer-docs-mcp
 
-# Or install globally from GitHub
-pipx install "git+https://github.com/genlayerlabs/genlayer-docs-mcp"
+# Or from GitHub
+pipx install "git+https://github.com/Laegend14/Genlayer-mcp"
 ```
 
 Then configure the command in any AI client as:
 * **Command**: `genlayer-docs-mcp` (no arguments required)
+
+> Note: this requires the `pipx` scripts directory to be on your `PATH`
+> (`pipx ensurepath`). If your client can't find the `genlayer-docs-mcp`
+> executable, use the **Quick Start** `python -m` method instead.
+
+---
+
+## Development
+
+Clone the repo and install in editable mode:
+
+```bash
+git clone https://github.com/Laegend14/Genlayer-mcp
+cd Genlayer-mcp
+pip install -e .
+```
+
+Run the server directly to confirm it loads the documentation:
+
+```bash
+python -m genlayer_docs_mcp
+```
+
+You should see a log line reporting the number of parsed documentation sections.
